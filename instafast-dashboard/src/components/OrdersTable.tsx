@@ -55,7 +55,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders, onSelectOrder }) => {
         <div
             className="ag-theme-material"
             style={{
-                height: 500,
+                height: "100%",
                 width: "100%",
                 border: "1px solid #ddd"
             }}
@@ -69,7 +69,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders, onSelectOrder }) => {
                 onRowClicked={onRowClicked}
                 onGridReady={onGridReady}
                 animateRows={true}
-                rowSelection="single"
+                rowSelection="multiple"
             />
         </div>
     )
