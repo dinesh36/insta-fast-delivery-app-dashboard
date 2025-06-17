@@ -19,7 +19,7 @@ function Dashboard() {
         <div style={{ flex: 0.6, overflowY: 'auto' }}>
           <OrdersTable orders={mockOrders} />
         </div>
-        <div style={{ flex: 0.4, overflow: 'auto' }}>
+        <div style={{ flex: 0.4, overflow: 'hidden' }}>
           <ChartView />
         </div>
       </div>
