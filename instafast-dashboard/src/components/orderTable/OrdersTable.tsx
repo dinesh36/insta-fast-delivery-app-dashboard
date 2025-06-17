@@ -62,7 +62,7 @@ function OrdersTable({ orders, onSelectOrder }: OrdersTableProps): JSX.Element {
     <div
       className="ag-theme-material"
       style={{
-        height: '600px',
+        height: '100%',
         width: '100%',
         border: '1px solid #ddd',
       }}
