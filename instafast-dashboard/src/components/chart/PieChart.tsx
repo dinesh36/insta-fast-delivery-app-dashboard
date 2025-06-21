@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { OrderData } from './BarChart';
 
 interface PieChartProps {
@@ -9,13 +10,15 @@ interface PieChartProps {
 
 function PieChart({ data, colors }: PieChartProps): React.ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (!ref.current) return;
 
     const container = ref.current;
     const { width } = container.getBoundingClientRect();
-    const height = 300;
+    const height = isMobile ? 900 : 300;
     const radius = Math.min(width, height) / 2 - 20;
 
     d3.select(ref.current).selectAll('*').remove();

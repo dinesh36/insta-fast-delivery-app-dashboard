@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme, useMediaQuery } from '@mui/material';
 import OrdersTable from '../components/orderTable/OrdersTable';
 import mockOrders from '@/data/mockData';
 import MapView from '@/components/map/MapView';
@@ -11,6 +11,8 @@ function Dashboard() {
   const [leftWidth, setLeftWidth] = useState(50);
   const [topHeight, setTopHeight] = useState(60);
   const containerRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleHorizontalResize = useCallback((mouseDownEvent: React.MouseEvent) => {
     mouseDownEvent.preventDefault();
@@ -52,6 +54,22 @@ function Dashboard() {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   }, [topHeight]);
+
+  if (isMobile) {
+    return (
+      <Box sx={{ height: '100vh' }}>
+        <Box sx={{ height: '100vh', minHeight: '500px' }}>
+          <OrdersTable orders={mockOrders} />
+        </Box>
+        <Box sx={{ height: '100vh', minHeight: '500px' }}>
+          <ChartView />
+        </Box>
+        <Box sx={{ height: '100vh', minHeight: '500px' }}>
+          <MapView riders={mockRiders} />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box

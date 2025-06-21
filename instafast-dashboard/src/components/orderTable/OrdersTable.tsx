@@ -1,11 +1,12 @@
-import React, { JSX, useMemo } from 'react';
+import React, { JSX, useEffect, useMemo } from 'react';
 import {
   AllCommunityModule,
   ModuleRegistry,
   provideGlobalGridOptions,
-  ColDef, GridReadyEvent, RowClickedEvent,
+  ColDef, GridReadyEvent, RowClickedEvent, GridApi,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 provideGlobalGridOptions({ theme: 'legacy' });
@@ -25,6 +26,10 @@ type OrdersTableProps = {
 };
 
 function OrdersTable({ orders, onSelectOrder }: OrdersTableProps): JSX.Element {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const gridApiRef = React.useRef<GridApi | null>(null);
+
   const defaultColDef = useMemo(
     () => ({
       resizable: true,
@@ -53,10 +58,28 @@ function OrdersTable({ orders, onSelectOrder }: OrdersTableProps): JSX.Element {
       onSelectOrder?.(event.data);
     }
   };
+  const handleResize = () => {
+    if (gridApiRef.current) {
+      requestAnimationFrame(() => {
+        gridApiRef.current?.sizeColumnsToFit();
+        gridApiRef.current?.resetRowHeights();
+      });
+    }
+  };
 
   const onGridReady = (params: GridReadyEvent) => {
-    params.api.sizeColumnsToFit();
+    gridApiRef.current = params.api;
+    handleResize();
   };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+  }, [isMobile]);
 
   return (
     <div
@@ -65,18 +88,23 @@ function OrdersTable({ orders, onSelectOrder }: OrdersTableProps): JSX.Element {
         height: '100%',
         width: '100%',
         border: '1px solid #ddd',
+        minHeight: isMobile ? 400 : 600,
+        overflow: 'auto',
       }}
     >
       <AgGridReact
+        key={isMobile ? 'mobile' : 'desktop'}
         rowData={orders}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
-        pagination
-        paginationPageSize={10}
         onRowClicked={onRowClicked}
         onGridReady={onGridReady}
         animateRows
         rowSelection="multiple"
+        pagination
+        paginationPageSize={isMobile ? 5 : 10}
+        paginationAutoPageSize={isMobile}
+        suppressPaginationPanel={false}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 export interface OrderData {
     label: string;
@@ -13,21 +14,23 @@ interface BarChartProps {
 
 function BarChart({ data, colors }: BarChartProps): React.ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
+  const renderChart = () => {
     if (!ref.current) return;
 
     const container = ref.current;
     const { width } = container.getBoundingClientRect();
-    const height = 300;
+    const height = isMobile ? 900 : 300;
     const margin = {
       top: 20, right: 20, bottom: 40, left: 40,
     };
 
-    d3.select(ref.current).selectAll('*').remove();
+    d3.select(container).selectAll('*').remove();
 
     const svg = d3
-      .select(ref.current)
+      .select(container)
       .append('svg')
       .attr('width', width)
       .attr('height', height);
@@ -63,9 +66,15 @@ function BarChart({ data, colors }: BarChartProps): React.ReactElement {
       .append('g')
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y));
-  }, [data, colors]);
+  };
 
-  return <div ref={ref} />;
+  useEffect(() => {
+    renderChart();
+    window.addEventListener('resize', renderChart);
+    return () => window.removeEventListener('resize', renderChart);
+  }, [data, colors, isMobile]);
+
+  return <div ref={ref} key={isMobile ? 'mobile' : 'desktop'} style={{ width: '100%', height: '100%' }} />;
 }
 
 export default BarChart;
