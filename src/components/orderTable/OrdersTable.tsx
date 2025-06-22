@@ -8,19 +8,17 @@ import {
 import {AgGridReact} from 'ag-grid-react';
 import {useMediaQuery, useTheme} from '@mui/material';
 import {Order} from "@/types/order";
+import {useAppSelector} from '@/redux-store/hooks';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 provideGlobalGridOptions({theme: 'legacy'});
 
-type OrdersTableProps = {
-    orders: Order[];
-    onSelectOrder?: (order: Order) => void;
-};
-
-function OrdersTable({orders, onSelectOrder}: OrdersTableProps): JSX.Element {
+function OrdersTable(): JSX.Element {
     const theme = useTheme();
+    const orders = useAppSelector((state) => state.orderList.orders);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const gridApiRef = React.useRef<GridApi | null>(null);
+    const isLoading = useAppSelector((state) => state.orderList.isOrdersLoading);
 
     const defaultColDef = useMemo(
         () => ({
@@ -52,7 +50,7 @@ function OrdersTable({orders, onSelectOrder}: OrdersTableProps): JSX.Element {
 
     const onRowClicked = (event: RowClickedEvent<Order>) => {
         if (event.data) {
-            onSelectOrder?.(event.data);
+            console.log('Do something if required')
         }
     };
     const handleResize = () => {
@@ -90,6 +88,7 @@ function OrdersTable({orders, onSelectOrder}: OrdersTableProps): JSX.Element {
             }}
         >
             <AgGridReact
+                loading={isLoading}
                 key={isMobile ? 'mobile' : 'desktop'}
                 rowData={orders}
                 columnDefs={columnDefs}
