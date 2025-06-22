@@ -10,7 +10,7 @@ export const fetchOrders = createAsyncThunk(
         dispatch(setOrdersLoading(true));
 
         const queryParams = new URLSearchParams(filters as any).toString();
-        const response = await fetch(`/api/generate-orders${queryParams ? `?${queryParams}` : ''}`);
+        const response = await fetch(`/api/orders${queryParams ? `?${queryParams}` : ''}`);
 
         if (!response.ok) {
             dispatch(setOrders([]));

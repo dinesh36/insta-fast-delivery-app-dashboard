@@ -3,12 +3,13 @@ import {
     AllCommunityModule,
     ModuleRegistry,
     provideGlobalGridOptions,
-    ColDef, GridReadyEvent, RowClickedEvent, GridApi,
+    ColDef, GridReadyEvent, RowClickedEvent, GridApi
 } from 'ag-grid-community';
 import {AgGridReact} from 'ag-grid-react';
 import {useMediaQuery, useTheme} from '@mui/material';
 import {Order} from "@/types/order";
 import {useAppSelector} from '@/redux-store/hooks';
+import {TextFilter} from "@/components/orderTable/TextFilter";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 provideGlobalGridOptions({theme: 'legacy'});
@@ -31,8 +32,8 @@ function OrdersTable(): JSX.Element {
         [],
     );
 
-    const columnDefs: ColDef[] = useMemo(
-        () => [
+    const columnDefs: ColDef[] = useMemo(() => {
+        const columns: ColDef[] = [
             {field: 'orderId', headerName: 'Order Number'},
             {field: 'orderFrom', headerName: 'Order From'},
             {field: 'restaurant', headerName: 'Restaurant'},
@@ -44,9 +45,12 @@ function OrdersTable(): JSX.Element {
             {field: 'isDelayed', headerName: 'Is Delayed'},
             {field: 'city', headerName: 'City'},
             {field: 'deliveryZone', headerName: 'Area'},
-        ],
-        [],
-    );
+        ];
+        return columns.map((record: ColDef) => ({
+            ...record,
+            filter: TextFilter
+        })) as ColDef[];
+    }, []);
 
     const onRowClicked = (event: RowClickedEvent<Order>) => {
         if (event.data) {
