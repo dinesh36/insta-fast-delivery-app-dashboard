@@ -6,31 +6,21 @@ import ChartView from "@/components/chart/ChartView";
 import MapView from "@/components/map/MapView";
 import mockRiders from "@/data/mockRiders";
 import ResizeHandle from "@/components/resizeHandle/ResizeHandle";
-import {useAppDispatch} from "@/redux-store/hooks";
-import {setOrders, setOrdersLoading} from "@/redux-store/order-list-slice";
+import {fetchOrders} from "@/redux-store/order-list/orderThunk";
+import {useDispatch} from "react-redux";
 
 export default function homePage() {
     const [leftWidth, setLeftWidth] = useState(50);
     const [topHeight, setTopHeight] = useState(60);
     const containerRef = useRef<HTMLDivElement>(null);
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
 
     useEffect(() => {
-        const getOrders = async () => {
-            console.log('inside get orders list');
-            try{
-                dispatch(setOrdersLoading(true))
-                const response = await fetch('/api/orders');
-                const orders = await response.json()
-                dispatch(setOrders(orders))
-            } finally {
-                dispatch(setOrdersLoading(false))
-            }
-        }
-        getOrders()
+        // noinspection TypeScriptValidateTypes
+        dispatch(fetchOrders())
     }, []);
 
     const handleHorizontalResize = useCallback((mouseDownEvent: React.MouseEvent) => {
