@@ -77,22 +77,7 @@ export default function homePage() {
     };
 
     if (isMobile) {
-        return (
-            <Box>
-                {renderHeader()}
-                <Box sx={{height: 'calc(100vh - 64px)'}}>
-                    <Box sx={{height: '400px', minHeight: '500px'}}>
-                        <OrdersTable/>
-                    </Box>
-                    <Box sx={{height: '500px', minHeight: '500px'}}>
-                        <ChartView/>
-                    </Box>
-                    <Box sx={{height: '600px', minHeight: '500px'}}>
-                        <MapView riders={mockRiders}/>
-                    </Box>
-                </Box>
-            </Box>
-        );
+
     }
 
     const renderGrid = () => {
@@ -130,31 +115,53 @@ export default function homePage() {
         </>
     }
 
+    const renderMobileLayout = () => {
+        return (
+            <Box>
+                <Box sx={{height: 'calc(100vh - 64px)'}}>
+                    <Box sx={{height: '400px', minHeight: '500px'}}>
+                        <OrdersTable/>
+                    </Box>
+                    <Box sx={{height: '500px', minHeight: '500px'}}>
+                        <ChartView/>
+                    </Box>
+                    <Box sx={{height: '600px', minHeight: '500px'}}>
+                        <MapView riders={mockRiders}/>
+                    </Box>
+                </Box>
+            </Box>
+        );
+    }
+
+    const renderDesktopLayout = () => {
+        return  <Box
+            ref={containerRef}
+            sx={{
+                display: 'flex',
+                height: 'calc(100vh - 64px)',
+                overflow: 'hidden',
+                userSelect: 'none',
+            }}
+        >
+            <Box sx={{
+                position: 'relative',
+                width: `${leftWidth}%`,
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+            >
+                {renderGrid()}
+                {renderChart()}
+            </Box>
+
+            {renderMap()}
+        </Box>
+    }
+
     return (
         <Box>
             {renderHeader()}
-            <Box
-                ref={containerRef}
-                sx={{
-                    display: 'flex',
-                    height: 'calc(100vh - 64px)',
-                    overflow: 'hidden',
-                    userSelect: 'none',
-                }}
-            >
-                <Box sx={{
-                    position: 'relative',
-                    width: `${leftWidth}%`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-                >
-                    {renderGrid()}
-                    {renderChart()}
-                </Box>
-
-                {renderMap()}
-            </Box>
+            {isMobile ? renderMobileLayout(): renderDesktopLayout()}
         </Box>
     );
 }
