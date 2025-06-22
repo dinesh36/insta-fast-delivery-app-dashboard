@@ -7,18 +7,10 @@ import {
 } from 'ag-grid-community';
 import {AgGridReact} from 'ag-grid-react';
 import {useMediaQuery, useTheme} from '@mui/material';
+import {Order} from "@/types/order";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 provideGlobalGridOptions({theme: 'legacy'});
-
-export type Order = {
-    orderId: string;
-    status: string;
-    rider: string;
-    placedAt: string;
-    deliveryZone: string;
-    estimatedDelivery: string;
-};
 
 type OrdersTableProps = {
     orders: Order[];
