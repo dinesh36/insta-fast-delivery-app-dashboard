@@ -1,42 +1,53 @@
-import React, { JSX } from 'react';
+import React, { useState, useMemo } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import OrderHeatMap from './OrderHeatMap';
+import mockRiders from '../../data/mockRiders';
 
 const mapContainerStyle = {
   width: '100%',
   height: '100%',
 };
-const center = {
+const defaultCenter = {
   lat: 40.7549,
   lng: -73.984,
 };
+const ALL_RIDERS = 'ALL_RIDERS';
 
-type Rider = {
-  riderId: string;
-  name: string;
-  location: { lat: number; lng: number };
-};
-
-type MapViewProps = {
-  riders: Rider[];
-};
-
-function MapView({ riders }: MapViewProps): JSX.Element {
+function MapView() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY || '',
+    libraries: ['visualization'],
   });
+
+  const [selectedRiderId, setSelectedRiderId] = useState<string>(ALL_RIDERS);
+
+  const center = useMemo(() => {
+    if (selectedRiderId === ALL_RIDERS) return defaultCenter;
+    const rider = mockRiders.find(r => r.riderId === selectedRiderId);
+    return rider ? rider.location : defaultCenter;
+  }, [selectedRiderId]);
+
+  // Filter markers based on selected rider
+  const markers = selectedRiderId === ALL_RIDERS
+      ? mockRiders
+      : mockRiders.filter(r => r.riderId === selectedRiderId);
 
   if (!isLoaded) return <div>Loading map...</div>;
 
   return (
-    <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={12}>
-      {riders.map((rider) => (
-        <Marker
-          key={rider.riderId}
-          position={rider.location}
-          title={rider.name}
+      <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={12}>
+        <OrderHeatMap
+            selectedRiderId={selectedRiderId}
+            setSelectedRiderId={setSelectedRiderId}
         />
-      ))}
-    </GoogleMap>
+        {markers.map((rider) => (
+            <Marker
+                key={rider.riderId}
+                position={rider.location}
+                title={rider.name}
+            />
+        ))}
+      </GoogleMap>
   );
 }
 
