@@ -59,17 +59,52 @@ export default function homePage() {
     if (isMobile) {
         return (
             <Box sx={{height: '100vh'}}>
-                <Box sx={{height: '100vh', minHeight: '500px'}}>
+                <Box sx={{height: '400px', minHeight: '500px'}}>
                     <OrdersTable orders={mockOrders}/>
                 </Box>
-                <Box sx={{height: '100vh', minHeight: '500px'}}>
+                <Box sx={{height: '500px', minHeight: '500px'}}>
                     <ChartView/>
                 </Box>
-                <Box sx={{height: '100vh', minHeight: '500px'}}>
+                <Box sx={{height: '600px', minHeight: '500px'}}>
                     <MapView riders={mockRiders}/>
                 </Box>
             </Box>
         );
+    }
+
+    const renderGrid = () => {
+        return <Box sx={{
+            position: 'relative',
+            height: `${topHeight}%`,
+            overflow: 'hidden',
+        }}
+        >
+            <OrdersTable orders={mockOrders}/>
+            <ResizeHandle direction="vertical" onMouseDown={handleVerticalResize}/>
+        </Box>
+    }
+
+    const renderMap = () => {
+        return <Box sx={{
+            width: `${100 - leftWidth}%`,
+            overflow: 'hidden',
+        }}
+        >
+            <MapView riders={mockRiders}/>
+        </Box>
+    }
+
+    const renderChart = () => {
+        return <>
+            <Box sx={{
+                height: `${100 - topHeight}%`,
+                overflow: 'hidden',
+            }}
+            >
+                <ChartView/>
+            </Box>
+            <ResizeHandle direction="horizontal" onMouseDown={handleHorizontalResize}/>
+        </>
     }
 
     return (
@@ -89,32 +124,11 @@ export default function homePage() {
                 flexDirection: 'column',
             }}
             >
-                <Box sx={{
-                    position: 'relative',
-                    height: `${topHeight}%`,
-                    overflow: 'hidden',
-                }}
-                >
-                    <OrdersTable orders={mockOrders}/>
-                    <ResizeHandle direction="vertical" onMouseDown={handleVerticalResize}/>
-                </Box>
-                <Box sx={{
-                    height: `${100 - topHeight}%`,
-                    overflow: 'hidden',
-                }}
-                >
-                    <ChartView/>
-                </Box>
-                <ResizeHandle direction="horizontal" onMouseDown={handleHorizontalResize}/>
+                {renderGrid()}
+                {renderChart()}
             </Box>
 
-            <Box sx={{
-                width: `${100 - leftWidth}%`,
-                overflow: 'hidden',
-            }}
-            >
-                <MapView riders={mockRiders}/>
-            </Box>
+            {renderMap()}
         </Box>
     );
 }
