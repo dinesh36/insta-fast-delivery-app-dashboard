@@ -1,20 +1,34 @@
-const mockOrders = [
-  {
+
+enum OrderStatus {
+  Completed = 'Completed'
+}
+
+enum OrderCities {
+  Ahmedabad = 'Ahmedabad',
+}
+
+enum DeliveryZones {
+
+}
+
+
+const mockOrderObject =  {
     orderId: 'ORD001',
-    status: 'In Transit',
-    rider: 'RIDER123',
-    placedAt: '2025-06-16T08:30:00Z',
-    deliveryZone: 'Downtown',
-    estimatedDelivery: '2025-06-16T09:00:00Z',
-  },
-  {
-    orderId: 'ORD002',
-    status: 'Delivered',
-    rider: 'RIDER456',
-    placedAt: '2025-06-16T07:45:00Z',
-    deliveryZone: 'Midtown',
-    estimatedDelivery: '2025-06-16T08:15:00Z',
-  },
+    orderFrom: 'Dinesh Dabhi',
+    restaurant: 'The Sky Heaven',
+    rider: 'Sanket Parmar',
+    status: OrderStatus.Completed,
+    placedAt: new Date(),
+    estimatedDelivery: new Date(),
+    deliveredAt: new Date(),
+    isDelayed: true,
+    city: 'Ahmedabad',
+    orderZone: '123',
+    deliveryZone: '123'
+};
+
+const mockOrders = [
+  mockOrderObject, mockOrderObject
 ];
 
 export default mockOrders;
