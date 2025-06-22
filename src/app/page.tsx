@@ -1,6 +1,6 @@
 "use client";
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Box, useMediaQuery, useTheme} from "@mui/material";
+import {AppBar, Box, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/material";
 import OrdersTable from "@/components/orderTable/OrdersTable";
 import ChartView from "@/components/chart/ChartView";
 import MapView from "@/components/map/MapView";
@@ -74,17 +74,32 @@ export default function homePage() {
         document.addEventListener('mouseup', handleMouseUp);
     }, [topHeight]);
 
+    const renderHeader = () => {
+        return (
+            <AppBar position="static" sx={{ mb: 2 }}>
+                <Toolbar>
+                    <Typography variant="h6" component="h1">
+                        Insta Fast Delivery Dashboard
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+        );
+    };
+
     if (isMobile) {
         return (
-            <Box sx={{height: '100vh'}}>
-                <Box sx={{height: '400px', minHeight: '500px'}}>
-                    <OrdersTable/>
-                </Box>
-                <Box sx={{height: '500px', minHeight: '500px'}}>
-                    <ChartView/>
-                </Box>
-                <Box sx={{height: '600px', minHeight: '500px'}}>
-                    <MapView riders={mockRiders}/>
+            <Box>
+                {renderHeader()}
+                <Box sx={{height: 'calc(100vh - 64px)'}}>
+                    <Box sx={{height: '400px', minHeight: '500px'}}>
+                        <OrdersTable/>
+                    </Box>
+                    <Box sx={{height: '500px', minHeight: '500px'}}>
+                        <ChartView/>
+                    </Box>
+                    <Box sx={{height: '600px', minHeight: '500px'}}>
+                        <MapView riders={mockRiders}/>
+                    </Box>
                 </Box>
             </Box>
         );
@@ -126,27 +141,30 @@ export default function homePage() {
     }
 
     return (
-        <Box
-            ref={containerRef}
-            sx={{
-                display: 'flex',
-                height: '100vh',
-                overflow: 'hidden',
-                userSelect: 'none',
-            }}
-        >
-            <Box sx={{
-                position: 'relative',
-                width: `${leftWidth}%`,
-                display: 'flex',
-                flexDirection: 'column',
-            }}
+        <Box>
+            {renderHeader()}
+            <Box
+                ref={containerRef}
+                sx={{
+                    display: 'flex',
+                    height: 'calc(100vh - 64px)',
+                    overflow: 'hidden',
+                    userSelect: 'none',
+                }}
             >
-                {renderGrid()}
-                {renderChart()}
-            </Box>
+                <Box sx={{
+                    position: 'relative',
+                    width: `${leftWidth}%`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+                >
+                    {renderGrid()}
+                    {renderChart()}
+                </Box>
 
-            {renderMap()}
+                {renderMap()}
+            </Box>
         </Box>
     );
 }
