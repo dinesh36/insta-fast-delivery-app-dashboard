@@ -5,7 +5,7 @@ import { Order } from '@/types/order';
 
 export const fetchOrders = createAsyncThunk(
     'orders/fetchOrders',
-    async (filters: { city?: string; status?: string } = {}, thunkAPI) => {
+    async (filters: any, thunkAPI) => {
         const { dispatch } = thunkAPI;
         dispatch(setOrdersLoading(true));
 

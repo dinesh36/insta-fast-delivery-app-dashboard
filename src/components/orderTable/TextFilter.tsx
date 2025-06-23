@@ -4,20 +4,11 @@ import {IAfterGuiAttachedParams, IDoesFilterPassParams} from "ag-grid-community"
 import {CustomFilterProps, useGridFilter} from "ag-grid-react";
 
 export const TextFilter = (props: CustomFilterProps) => {
-    const {model, onModelChange, getValue} = props;
+    const {model, onModelChange} = props;
     const [searchValue, setSearchValue] = useState('');
     const [closeFilter, setCloseFilter] = useState<(() => void) | undefined>();
 
-    const doesFilterPass = (params: IDoesFilterPassParams)=>{
-        const { node } = params;
-        const filterText: string = model;
-        const rowValue: string = getValue(node).toString().toLowerCase();
-        // make sure each word passes separately, ie search for firstname, lastname
-        return filterText
-            .toLowerCase()
-            .split(" ")
-            .every((filterWord) => rowValue.indexOf(filterWord) >= 0);
-    }
+    const doesFilterPass = ()=> true;
 
     const afterGuiAttached = ({ hidePopup }: IAfterGuiAttachedParams) => {
         setCloseFilter(() => hidePopup);
