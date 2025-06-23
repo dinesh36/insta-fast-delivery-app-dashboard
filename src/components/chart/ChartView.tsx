@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Box, Typography, SelectChangeEvent } from '@mui/material';
-import {mockChartData, mockLineData} from '@/data/mockChartData';
+import {mockChartData} from '@/data/mockChartData';
 import BarChart, { OrderData } from './BarChart';
 import PieChart from './PieChart';
 import ChartToolbar from './ChartToolbar';
 import LineChart from "@/components/chart/LineChart";
+import {useAppSelector} from "@/redux-store/hooks";
+import ChartRange, {DateRange} from "@/components/chart/ChartRange";
 
 export interface RiderData {
   riderId: string;
@@ -15,6 +17,8 @@ export interface RiderData {
 function ChartView(): React.ReactElement {
   const [chartType, setChartType] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedRider, setSelectedRider] = useState<RiderData>(mockChartData[0]);
+    const [selectedRange, setSelectedRange] = useState<DateRange>('1W');
+    const orders = useAppSelector((state) => state.orderList.orders);
 
   const colors = ['#FF6384', '#36A2EB', '#FFCE56'];
   const totalOrders = selectedRider.orders.reduce((sum, o) => sum + o.value, 0);
@@ -37,8 +41,13 @@ function ChartView(): React.ReactElement {
         onChartTypeChange={handleChartTypeChange}
         onRiderChange={handleRiderChange}
       />
+        {chartType === 'line' && (
+            <Box>
+                <ChartRange range={selectedRange} onRangeChange={setSelectedRange} />
+            </Box>
+        )}
 
-      <Box sx={{ flex: 1, p: 2, minHeight: 0 }}>
+      <Box sx={{ flex: 1, minHeight: 0 }}>
         <Box sx={{ width: '100%', height: '100%' }}>
             {chartType === 'bar' && (
                 <BarChart data={selectedRider.orders} colors={colors} />
@@ -47,7 +56,7 @@ function ChartView(): React.ReactElement {
                 <PieChart data={selectedRider.orders} colors={colors} />
             )}
             {chartType === 'line' && (
-                <LineChart data={mockLineData} />
+                <LineChart orders={orders} range={selectedRange} />
             )}
         </Box>
       </Box>
