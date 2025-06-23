@@ -6,17 +6,18 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-  IconButton,
+  IconButton, Box,
 } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PieChartIcon from '@mui/icons-material/PieChart';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 import { RiderData } from './ChartView';
 
 interface ChartToolbarProps {
-    chartType: 'bar' | 'pie';
+    chartType: 'bar' | 'pie' | 'line';
     selectedRider: RiderData;
     riders: RiderData[];
-    onChartTypeChange: () => void;
+    onChartTypeChange: (type: 'bar' | 'pie' | 'line') => void;
     onRiderChange: (event: SelectChangeEvent) => void;
 }
 
@@ -33,7 +34,7 @@ function ChartToolbar({
         <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
           Orders Analysis
           {' '}
-          {chartType === 'bar' ? 'Bar Chart' : 'Pie Chart'}
+          {chartType === 'bar' ? 'Bar Chart' : chartType === 'pie' ? 'Pie Chart' : 'Line Chart'}
         </Typography>
         <Select
           value={selectedRider.riderId}
@@ -47,9 +48,29 @@ function ChartToolbar({
             </MenuItem>
           ))}
         </Select>
-        <IconButton onClick={onChartTypeChange} size="small">
-          {chartType === 'bar' ? <PieChartIcon /> : <BarChartIcon />}
-        </IconButton>
+        <Box>
+          <IconButton
+            onClick={() => onChartTypeChange('bar')}
+            size="small"
+            color={chartType === 'bar' ? 'primary' : 'default'}
+          >
+            <BarChartIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => onChartTypeChange('pie')}
+            size="small"
+            color={chartType === 'pie' ? 'primary' : 'default'}
+          >
+            <PieChartIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => onChartTypeChange('line')}
+            size="small"
+            color={chartType === 'line' ? 'primary' : 'default'}
+          >
+            <ShowChartIcon />
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

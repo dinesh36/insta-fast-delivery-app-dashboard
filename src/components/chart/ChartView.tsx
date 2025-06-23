@@ -1,10 +1,10 @@
-// Updated ChartView.tsx
 import React, { useState } from 'react';
 import { Box, Typography, SelectChangeEvent } from '@mui/material';
-import mockChartData from '@/data/mockChartData';
+import {mockChartData, mockLineData} from '@/data/mockChartData';
 import BarChart, { OrderData } from './BarChart';
 import PieChart from './PieChart';
 import ChartToolbar from './ChartToolbar';
+import LineChart from "@/components/chart/LineChart";
 
 export interface RiderData {
   riderId: string;
@@ -13,7 +13,7 @@ export interface RiderData {
 }
 
 function ChartView(): React.ReactElement {
-  const [chartType, setChartType] = useState<'bar' | 'pie'>('bar');
+  const [chartType, setChartType] = useState<'bar' | 'pie' | 'line'>('bar');
   const [selectedRider, setSelectedRider] = useState<RiderData>(mockChartData[0]);
 
   const colors = ['#FF6384', '#36A2EB', '#FFCE56'];
@@ -24,9 +24,9 @@ function ChartView(): React.ReactElement {
     if (rider) setSelectedRider(rider);
   };
 
-  const handleChartTypeChange = () => {
-    setChartType((prev) => (prev === 'bar' ? 'pie' : 'bar'));
-  };
+    const handleChartTypeChange = (type: 'bar' | 'pie' | 'line') => {
+        setChartType(type);
+    };
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -40,11 +40,15 @@ function ChartView(): React.ReactElement {
 
       <Box sx={{ flex: 1, p: 2, minHeight: 0 }}>
         <Box sx={{ width: '100%', height: '100%' }}>
-          {chartType === 'bar' ? (
-            <BarChart data={selectedRider.orders} colors={colors} />
-          ) : (
-            <PieChart data={selectedRider.orders} colors={colors} />
-          )}
+            {chartType === 'bar' && (
+                <BarChart data={selectedRider.orders} colors={colors} />
+            )}
+            {chartType === 'pie' && (
+                <PieChart data={selectedRider.orders} colors={colors} />
+            )}
+            {chartType === 'line' && (
+                <LineChart data={mockLineData} />
+            )}
         </Box>
       </Box>
 
