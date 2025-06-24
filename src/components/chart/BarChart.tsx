@@ -3,13 +3,13 @@ import * as d3 from 'd3';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 export interface OrderData {
-    city: string;
-    completedOrders: number;
+  city: string;
+  completedOrders: number;
 }
 
 interface BarChartProps {
-    data: OrderData[];
-    colors: string[];
+  data: OrderData[];
+  colors: string[];
 }
 
 function BarChart({ data, colors }: BarChartProps): React.ReactElement {
