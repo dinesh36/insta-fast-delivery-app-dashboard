@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { useMediaQuery, useTheme } from '@mui/material';
+import Legend from './Legend';
 
 interface OrderData {
   label: string;
@@ -8,8 +9,8 @@ interface OrderData {
 }
 
 interface PieChartProps {
-    data: OrderData[];
-    colors: string[];
+  data: OrderData[];
+  colors: string[];
 }
 
 function PieChart({ data, colors }: PieChartProps): React.ReactElement {
@@ -48,16 +49,19 @@ function PieChart({ data, colors }: PieChartProps): React.ReactElement {
     arcs.append('path')
       .attr('d', arc as any)
       .attr('fill', (_, i) => colors[i % colors.length]);
-
-    arcs.append('text')
-      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
-      .attr('text-anchor', 'middle')
-      .style('font-size', isMobile ? 16 : 12)
-      .style('fill', '#000')
-      .text((d) => `${d.data.label}: ${d.data.value}`);
   }, [data, colors, isMobile]);
 
-  return <div ref={ref} />;
+  const legendData = data.map((item, index) => ({
+    label: item.label,
+    color: colors[index % colors.length],
+  }));
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <div ref={ref} />
+      <Legend data={legendData} />
+    </div>
+  );
 }
 
 export default PieChart;
