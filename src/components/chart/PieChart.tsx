@@ -31,8 +31,8 @@ function PieChart({ data, colors }: PieChartProps): React.ReactElement {
       .append('g')
       .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-    const pie = d3.pie<OrderData>().value((d) => d.value);
-    const arc = d3.arc<d3.PieArcDatum<OrderData>>()
+    const pie = d3.pie<{ label: string; value: number }>().value((d) => d.value);
+    const arc = d3.arc<d3.PieArcDatum<{ label: string; value: number }>>()
       .innerRadius(0)
       .outerRadius(radius);
 
@@ -43,14 +43,15 @@ function PieChart({ data, colors }: PieChartProps): React.ReactElement {
 
     arcs.append('path')
       .attr('d', arc as any)
-      .attr('fill', (_, i) => colors[i]);
+      .attr('fill', (_, i) => colors[i % colors.length]);
 
     arcs.append('text')
       .attr('transform', (d) => `translate(${arc.centroid(d)})`)
       .attr('text-anchor', 'middle')
-      .style('font-size', 12)
-      .text((d) => d.data.label);
-  }, [data, colors]);
+      .style('font-size', isMobile ? 16 : 12)
+      .style('fill', '#000')
+      .text((d) => `${d.data.label}: ${d.data.value}`);
+  }, [data, colors, isMobile]);
 
   return <div ref={ref} />;
 }

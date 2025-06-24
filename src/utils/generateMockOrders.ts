@@ -5,10 +5,10 @@ import {Order, OrderStatus} from "@/types/order";
 const cities = [
     'Ahmedabad',
     'Mumbai',
-    'Dilli',
-    'Banglore',
+    'Delhi',
+    'Bangalore',
     'Pune',
-    'Haidrabad',
+    'Hyderabad',
     'Kolkata',
 ];
 
@@ -20,8 +20,13 @@ export function generateMockOrders(countPerCity = 3000): Order[] {
         for (let i = 1; i <= countPerCity; i++) {
             const placedAt = faker.date.recent({days: 365});
             const estimatedDelivery = faker.date.soon({days: 1, refDate: placedAt});
-            const deliveredAt = faker.date.between({from: placedAt, to: estimatedDelivery});
-            const isDelayed = deliveredAt > estimatedDelivery;
+            const isDelayed = faker.datatype.boolean({ probability: 0.3 });
+            const deliveredAt = isDelayed
+                ? faker.date.between({
+                    from: estimatedDelivery,
+                    to: new Date(estimatedDelivery.getTime() + 24 * 60 * 60 * 1000)
+                })
+                : faker.date.between({ from: placedAt, to: estimatedDelivery });
 
             const orderObj = {
                 orderId: `ORD${String(i).padStart(4, '0')}`,
