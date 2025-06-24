@@ -31,27 +31,27 @@ function ChartToolbar({ chartType, onChartTypeChange }: ChartToolbarProps): Reac
   };
 
   return (
-      <AppBar position="static" color="default" elevation={0}>
-        <Toolbar variant="dense" sx={{ minHeight: '48px' }}>
-          <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-            Orders Analysis
-          </Typography>
-          <Select
-              value={chartType}
-              onChange={handleChartTypeChange}
-              size="small"
-              sx={{ width: 250 }}
-          >
-            {chartTypes.map(({ value, label, Icon }) => (
-                <MenuItem key={value} value={value}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Icon /> {label}
-                  </Box>
-                </MenuItem>
-            ))}
-          </Select>
-        </Toolbar>
-      </AppBar>
+    <AppBar position="static" color="default" elevation={0}>
+      <Toolbar variant="dense" sx={{ minHeight: '48px' }}>
+        <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+          Orders Analysis
+        </Typography>
+        <Select
+            value={chartType}
+            onChange={handleChartTypeChange}
+            size="small"
+            sx={{ width: 250 }}
+        >
+          {chartTypes.map(({ value, label, Icon }) => (
+              <MenuItem key={value} value={value}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Icon /> {label}
+                </Box>
+              </MenuItem>
+          ))}
+        </Select>
+      </Toolbar>
+    </AppBar>
   );
 }
 
