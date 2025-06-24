@@ -3,8 +3,8 @@ import * as d3 from 'd3';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 export interface OrderData {
-    label: string;
-    value: number;
+    city: string;
+    completedOrders: number;
 }
 
 interface BarChartProps {
@@ -24,7 +24,7 @@ function BarChart({ data, colors }: BarChartProps): React.ReactElement {
     const { width } = container.getBoundingClientRect();
     const height = isMobile ? 900 : 300;
     const margin = {
-      top: 20, right: 20, bottom: 40, left: 40,
+      top: 20, right: 20, bottom: 50, left: 40,
     };
 
     d3.select(container).selectAll('*').remove();
@@ -37,13 +37,13 @@ function BarChart({ data, colors }: BarChartProps): React.ReactElement {
 
     const x = d3
       .scaleBand()
-      .domain(data.map((d) => d.label))
+      .domain(data.map((d) => d.city))
       .range([margin.left, width - margin.right])
       .padding(0.3);
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.value)! + 5])
+      .domain([0, d3.max(data, (d) => d.completedOrders)! + 5])
       .range([height - margin.bottom, margin.top]);
 
     svg
@@ -51,16 +51,19 @@ function BarChart({ data, colors }: BarChartProps): React.ReactElement {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d) => x(d.label)!)
-      .attr('y', (d) => y(d.value))
+      .attr('x', (d) => x(d.city)!)
+      .attr('y', (d) => y(d.completedOrders))
       .attr('width', x.bandwidth())
-      .attr('height', (d) => height - margin.bottom - y(d.value))
-      .attr('fill', (_, i) => colors[i]);
+      .attr('height', (d) => height - margin.bottom - y(d.completedOrders))
+      .attr('fill', (_, i) => colors[i % colors.length]);
 
     svg
       .append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'rotate(-45)')
+      .style('text-anchor', 'end');
 
     svg
       .append('g')

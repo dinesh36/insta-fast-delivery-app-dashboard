@@ -18,12 +18,10 @@ export interface RiderData {
 
 function ChartView(): React.ReactElement {
   const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | 'comparison' | 'status'>('bar');
-  const [selectedRider, setSelectedRider] = useState<RiderData>(mockChartData[0]);
   const [selectedRange, setSelectedRange] = useState<DateRange>('1W');
   const orders = useAppSelector((state) => state.orderList.orders);
 
-  const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
-  const totalOrders = selectedRider.orders.reduce((sum, o) => sum + o.value, 0);
+  const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#48bb78'];
 
   const aggregatedData = orders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1;
@@ -34,6 +32,18 @@ function ChartView(): React.ReactElement {
   const pieChartData = Object.entries(aggregatedData).map(([label, value]) => ({
     label,
     value,
+  }));
+
+  const aggregatedCityData = orders
+    .filter((order) => order.status === 'Completed')
+    .reduce((acc, order) => {
+      acc[order.city] = (acc[order.city] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+  const barChartData = Object.entries(aggregatedCityData).map(([city, completedOrders]) => ({
+    city,
+    completedOrders,
   }));
 
   const handleChartTypeChange = (type: 'bar' | 'pie' | 'line' | 'comparison' | 'status') => {
@@ -52,7 +62,7 @@ function ChartView(): React.ReactElement {
       <Box sx={{ flex: 1, minHeight: 0 }}>
         <Box sx={{ width: '100%', height: '100%' }}>
           {chartType === 'bar' && (
-            <BarChart data={selectedRider.orders} colors={colors} />
+            <BarChart data={barChartData} colors={colors} />
           )}
           {chartType === 'pie' && (
             <PieChart data={pieChartData} colors={colors} />
@@ -68,16 +78,9 @@ function ChartView(): React.ReactElement {
           )}
         </Box>
       </Box>
-
-      <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
-        <Typography variant="subtitle1">
-          Total Orders:
-          {' '}
-          <strong>{totalOrders}</strong>
-        </Typography>
-      </Box>
     </Box>
   );
 }
 
 export default ChartView;
+

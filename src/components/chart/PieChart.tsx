@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { OrderData } from './BarChart';
+
+interface OrderData {
+  label: string;
+  value: number;
+}
 
 interface PieChartProps {
     data: OrderData[];
