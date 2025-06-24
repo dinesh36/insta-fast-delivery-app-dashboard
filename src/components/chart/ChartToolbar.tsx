@@ -6,73 +6,50 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
-  IconButton, Box,
+  Box,
 } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
-import { RiderData } from './ChartView';
+
+const chartTypes = [
+  { value: 'bar', label: 'Bar Chart', Icon: BarChartIcon },
+  { value: 'pie', label: 'Pie Chart', Icon: PieChartIcon },
+  { value: 'line', label: 'Line Chart', Icon: ShowChartIcon },
+];
 
 interface ChartToolbarProps {
-    chartType: 'bar' | 'pie' | 'line';
-    selectedRider: RiderData;
-    riders: RiderData[];
-    onChartTypeChange: (type: 'bar' | 'pie' | 'line') => void;
-    onRiderChange: (event: SelectChangeEvent) => void;
+  chartType: 'bar' | 'pie' | 'line';
+  onChartTypeChange: (type: 'bar' | 'pie' | 'line') => void;
 }
 
-function ChartToolbar({
-  chartType,
-  selectedRider,
-  riders,
-  onChartTypeChange,
-  onRiderChange,
-}: ChartToolbarProps): React.ReactElement {
+function ChartToolbar({ chartType, onChartTypeChange }: ChartToolbarProps): React.ReactElement {
+  const handleChartTypeChange = (event: SelectChangeEvent) => {
+    onChartTypeChange(event.target.value as 'bar' | 'pie' | 'line');
+  };
+
   return (
-    <AppBar position="static" color="default" elevation={0}>
-      <Toolbar variant="dense" sx={{ minHeight: '48px' }}>
-        <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-          Orders Analysis
-          {' '}
-          {chartType === 'bar' ? 'Bar Chart' : chartType === 'pie' ? 'Pie Chart' : 'Line Chart'}
-        </Typography>
-        <Select
-          value={selectedRider.riderId}
-          onChange={onRiderChange}
-          size="small"
-          sx={{ width: 200, mr: 2 }}
-        >
-          {riders.map((rider) => (
-            <MenuItem key={rider.riderId} value={rider.riderId}>
-              {rider.name}
-            </MenuItem>
-          ))}
-        </Select>
-        <Box>
-          <IconButton
-            onClick={() => onChartTypeChange('bar')}
-            size="small"
-            color={chartType === 'bar' ? 'primary' : 'default'}
+      <AppBar position="static" color="default" elevation={0}>
+        <Toolbar variant="dense" sx={{ minHeight: '48px' }}>
+          <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+            Orders Analysis
+          </Typography>
+          <Select
+              value={chartType}
+              onChange={handleChartTypeChange}
+              size="small"
+              sx={{ width: 200 }}
           >
-            <BarChartIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => onChartTypeChange('pie')}
-            size="small"
-            color={chartType === 'pie' ? 'primary' : 'default'}
-          >
-            <PieChartIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => onChartTypeChange('line')}
-            size="small"
-            color={chartType === 'line' ? 'primary' : 'default'}
-          >
-            <ShowChartIcon />
-          </IconButton>
-        </Box>
-      </Toolbar>
-    </AppBar>
+            {chartTypes.map(({ value, label, Icon }) => (
+                <MenuItem key={value} value={value}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Icon /> {label}
+                  </Box>
+                </MenuItem>
+            ))}
+          </Select>
+        </Toolbar>
+      </AppBar>
   );
 }
 
