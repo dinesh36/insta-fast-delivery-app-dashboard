@@ -17,11 +17,12 @@ const chartTypes = [
   { value: 'pie', label: 'Pie Chart', Icon: PieChartIcon },
   { value: 'line', label: 'Line Chart', Icon: ShowChartIcon },
   { value: 'comparison', label: 'Order Comparison', Icon: PieChartIcon },
+  { value: 'status', label: 'Completed vs Cancelled', Icon: PieChartIcon },
 ];
 
 interface ChartToolbarProps {
-  chartType: 'bar' | 'pie' | 'line' | 'comparison';
-  onChartTypeChange: (type: 'bar' | 'pie' | 'line' | 'comparison') => void;
+  chartType: 'bar' | 'pie' | 'line' | 'comparison' | 'status';
+  onChartTypeChange: (type: 'bar' | 'pie' | 'line' | 'comparison' | 'status') => void;
 }
 
 function ChartToolbar({ chartType, onChartTypeChange }: ChartToolbarProps): React.ReactElement {
@@ -39,7 +40,7 @@ function ChartToolbar({ chartType, onChartTypeChange }: ChartToolbarProps): Reac
               value={chartType}
               onChange={handleChartTypeChange}
               size="small"
-              sx={{ width: 200 }}
+              sx={{ width: 250 }}
           >
             {chartTypes.map(({ value, label, Icon }) => (
                 <MenuItem key={value} value={value}>

@@ -8,6 +8,7 @@ import LineChart from "@/components/chart/LineChart";
 import {useAppSelector} from "@/redux-store/hooks";
 import ChartRange, {DateRange} from "@/components/chart/ChartRange";
 import OrderComparisonPieChart from "@/components/chart/OrderComparisonPieChart";
+import OrderStatusPieChart from "@/components/chart/OrderStatusPieChart";
 
 export interface RiderData {
   riderId: string;
@@ -16,7 +17,7 @@ export interface RiderData {
 }
 
 function ChartView(): React.ReactElement {
-  const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | 'comparison'>('bar');
+  const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | 'comparison' | 'status'>('bar');
   const [selectedRider, setSelectedRider] = useState<RiderData>(mockChartData[0]);
   const [selectedRange, setSelectedRange] = useState<DateRange>('1W');
   const orders = useAppSelector((state) => state.orderList.orders);
@@ -35,7 +36,7 @@ function ChartView(): React.ReactElement {
     value,
   }));
 
-  const handleChartTypeChange = (type: 'bar' | 'pie' | 'line' | 'comparison') => {
+  const handleChartTypeChange = (type: 'bar' | 'pie' | 'line' | 'comparison' | 'status') => {
     setChartType(type);
   };
 
@@ -61,6 +62,9 @@ function ChartView(): React.ReactElement {
           )}
           {chartType === 'comparison' && (
               <OrderComparisonPieChart />
+          )}
+          {chartType === 'status' && (
+              <OrderStatusPieChart />
           )}
         </Box>
       </Box>
