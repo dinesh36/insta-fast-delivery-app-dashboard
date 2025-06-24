@@ -13,11 +13,11 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 const chartTypes = [
-  { value: 'bar', label: 'Bar Chart', Icon: BarChartIcon },
-  { value: 'pie', label: 'Pie Chart', Icon: PieChartIcon },
   { value: 'line', label: 'Line Chart', Icon: ShowChartIcon },
+  { value: 'pie', label: 'Pie Chart', Icon: PieChartIcon },
   { value: 'comparison', label: 'Order Comparison', Icon: PieChartIcon },
   { value: 'status', label: 'Completed vs Cancelled', Icon: PieChartIcon },
+  { value: 'bar', label: 'Bar Chart', Icon: BarChartIcon },
 ];
 
 interface ChartToolbarProps {

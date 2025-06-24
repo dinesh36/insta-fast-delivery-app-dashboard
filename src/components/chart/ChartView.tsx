@@ -17,7 +17,7 @@ export interface RiderData {
 }
 
 function ChartView(): React.ReactElement {
-  const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | 'comparison' | 'status'>('bar');
+  const [chartType, setChartType] = useState<'bar' | 'pie' | 'line' | 'comparison' | 'status'>('line');
   const [selectedRange, setSelectedRange] = useState<DateRange>('1W');
   const orders = useAppSelector((state) => state.orderList.orders);
 

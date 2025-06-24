@@ -11,7 +11,7 @@ const RANGE_DAYS: Record<LineChartProps['range'], number> = {
     '1W': 7, '1M': 30, '6M': 182, '1Y': 365,
 };
 
-const MARGIN = { top: 40, right: 50, bottom: 50, left: 60 };
+const MARGIN = { top: 40, right: 50, bottom: 130, left: 60 };
 
 const prepareChartData = (orders: Order[], range: LineChartProps['range']) => {
     const end = new Date();
@@ -37,14 +37,17 @@ const prepareChartData = (orders: Order[], range: LineChartProps['range']) => {
 };
 
 const createScales = (data: { date: Date; value: number }[], width: number, height: number) => {
-    const [minDate, maxDate] = d3.extent(data, d => d.date);
-    const adjustedMaxDate = minDate?.getTime() === maxDate?.getTime()
+    const dates = d3.extent(data, d => d.date);
+    const minDate = dates[0] ?? new Date();
+    const maxDate = dates[1] ?? new Date();
+
+    const adjustedMaxDate = minDate.getTime() === maxDate.getTime()
         ? new Date(maxDate.getTime() + 86400000)
         : maxDate;
 
     return {
         x: d3.scaleTime()
-            .domain([minDate!, adjustedMaxDate!])
+            .domain([minDate, adjustedMaxDate!])
             .range([0, width]),
         y: d3.scaleLinear()
             .domain([0, d3.max(data, d => d.value)! * 1.2])
@@ -177,7 +180,10 @@ function LineChart({ orders, range }: LineChartProps): React.ReactElement {
                 tooltip.style('opacity', 0);
             });
 
-        return () => tooltip.remove();
+        return () => {
+            tooltip.remove();
+            d3.select(container).selectAll('*').remove();
+        };
     }, [data]);
 
     return (
