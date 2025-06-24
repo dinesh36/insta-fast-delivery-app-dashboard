@@ -24,7 +24,7 @@ export function generateMockOrders(countPerCity = 3000): Order[] {
             const deliveredAt = isDelayed
                 ? faker.date.between({
                     from: estimatedDelivery,
-                    to: new Date(estimatedDelivery.getTime() + 24 * 60 * 60 * 1000)
+                    to: new Date(estimatedDelivery.getTime() + 60 * 60 * 1000)
                 })
                 : faker.date.between({ from: placedAt, to: estimatedDelivery });
 

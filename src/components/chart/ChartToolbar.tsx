@@ -16,11 +16,12 @@ const chartTypes = [
   { value: 'bar', label: 'Bar Chart', Icon: BarChartIcon },
   { value: 'pie', label: 'Pie Chart', Icon: PieChartIcon },
   { value: 'line', label: 'Line Chart', Icon: ShowChartIcon },
+  { value: 'comparison', label: 'Order Comparison', Icon: PieChartIcon },
 ];
 
 interface ChartToolbarProps {
-  chartType: 'bar' | 'pie' | 'line';
-  onChartTypeChange: (type: 'bar' | 'pie' | 'line') => void;
+  chartType: 'bar' | 'pie' | 'line' | 'comparison';
+  onChartTypeChange: (type: 'bar' | 'pie' | 'line' | 'comparison') => void;
 }
 
 function ChartToolbar({ chartType, onChartTypeChange }: ChartToolbarProps): React.ReactElement {
