@@ -13,6 +13,7 @@ import {TextFilter} from "@/components/orderTable/TextFilter";
 import {OptionsFilter} from "@/components/orderTable/OptionsFilter";
 import {debounce} from "@/utils";
 import {fetchOrders} from "@/redux-store/order-list/orderThunk";
+import {DateRangeFilter} from "@/components/orderTable/DateRangeFilter";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 provideGlobalGridOptions({theme: 'legacy'});
@@ -52,7 +53,7 @@ function OrdersTable(): JSX.Element {
             {field: 'restaurant', headerName: 'Restaurant'},
             {field: 'rider', headerName: 'Delivery Rider'},
             {field: 'status', headerName: 'Status', filter: OptionsFilter},
-            {field: 'placedAt', headerName: 'Order At'},
+            {field: 'placedAt', headerName: 'Order At', filter: DateRangeFilter},
             {field: 'estimatedDelivery', headerName: 'Expected Delivery Time'},
             {field: 'deliveredAt', headerName: 'Actual Delivery Time'},
             {field: 'isDelayed', headerName: 'Is Delayed'},
