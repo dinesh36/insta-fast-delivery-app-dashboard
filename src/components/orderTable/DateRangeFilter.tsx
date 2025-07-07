@@ -12,29 +12,30 @@ export const DateRangeFilter = forwardRef<unknown, DateRangeFilterProps>(() => {
     const [toDate, setToDate] = useState<string>('');
 
     const containerStyles: React.CSSProperties = {
-        padding: '16px',
-        width: '280px',
+        padding: '24px',
+        width: '320px',
         backgroundColor: '#ffffff',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+        borderRadius: '12px',
+        boxShadow: '0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)'
     };
 
     const inputContainerStyles: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px'
+        gap: '20px'
     };
 
     const fieldGroupStyles: React.CSSProperties = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '6px'
+        gap: '8px'
     };
 
     const labelStyles: React.CSSProperties = {
-        fontSize: '14px',
-        color: '#666',
-        fontWeight: 500
+        fontSize: '13px',
+        color: 'rgba(0, 0, 0, 0.6)',
+        fontWeight: 500,
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
     };
 
     return (

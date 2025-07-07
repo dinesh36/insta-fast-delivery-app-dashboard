@@ -1,20 +1,38 @@
 .custom-date-input {
     background: #FFF;
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #e0e0e0;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
     border-radius: 4px;
     font-size: 14px;
-    color: #333;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
+    color: rgba(0, 0, 0, 0.87);
+    transition: all 0.2s;
+    cursor: pointer;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .custom-date-input:hover {
-    border-color: #1976d2;
+    border-color: rgba(0, 0, 0, 0.87);
 }
 
 .custom-date-input:focus {
     border-color: #1976d2;
-    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    border-width: 2px;
+    padding: 11px;
+}
+
+/* Calendar popup styling */
+.custom-date-input::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    cursor: pointer;
+    padding: 4px;
+    filter: invert(0);
+}
+
+.custom-date-input {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.custom-date-input::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
 }
