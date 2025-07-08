@@ -19,4 +19,6 @@ export interface Order {
     city: string;
     orderZone: string;
     deliveryZone: string;
+    lat: number;
+    lng: number;
 }

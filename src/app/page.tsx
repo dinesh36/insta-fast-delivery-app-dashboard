@@ -4,10 +4,10 @@ import {AppBar, Box, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/ma
 import OrdersTable from "@/components/orderTable/OrdersTable";
 import ChartView from "@/components/chart/ChartView";
 import MapView from "@/components/map/MapView";
-import mockRiders from "@/data/mockRiders";
 import ResizeHandle from "@/components/resizeHandle/ResizeHandle";
 import {fetchOrders} from "@/redux-store/order-list/orderThunk";
 import {useDispatch} from "react-redux";
+import { useAppSelector } from '@/redux-store/hooks';
 
 export default function homePage() {
     const [leftWidth, setLeftWidth] = useState(50);
@@ -16,7 +16,7 @@ export default function homePage() {
     const dispatch = useDispatch();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+    const orders = useAppSelector((state) => state.orderList.orders);
 
     useEffect(() => {
         // noinspection TypeScriptValidateTypes
@@ -98,7 +98,7 @@ export default function homePage() {
             overflow: 'hidden',
         }}
         >
-            <MapView riders={mockRiders}/>
+            <MapView orders={orders} />
         </Box>
     }
 
@@ -126,7 +126,7 @@ export default function homePage() {
                         <ChartView/>
                     </Box>
                     <Box sx={{height: '600px', minHeight: '500px'}}>
-                        <MapView riders={mockRiders}/>
+                        <MapView orders={orders} />
                     </Box>
                 </Box>
             </Box>
